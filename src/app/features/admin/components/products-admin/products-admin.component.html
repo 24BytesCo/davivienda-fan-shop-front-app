@@ -1,0 +1,179 @@
+<section class="products-admin">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h2 class="h5 mb-0">Productos</h2>
+    <div>
+      <div class="input-group input-group-sm mr-2 d-inline-flex align-items-center" style="width: 260px;">
+        <input type="text" class="form-control" placeholder="Buscar…" [(ngModel)]="q" (keyup.enter)="goToPage(1)"/>
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" (click)="goToPage(1)">Buscar</button>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-sm" (click)="openCreate()">Nuevo producto</button>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body p-0">
+      <div *ngIf="loading" class="text-center py-4">Cargando…</div>
+      <div *ngIf="!loading">
+        <div class="table-responsive">
+          <table class="table mb-0 align-middle">
+            <thead class="thead-light">
+              <tr>
+                <th>Producto</th>
+                <th class="text-right">Puntos</th>
+                <th class="text-right">Stock</th>
+                <th>Categoría</th>
+                <th style="width: 140px;"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of products">
+                <td>
+                  <div class="d-flex align-items-center">
+                    <img *ngIf="p.images && p.images.length > 0" [src]="p.images![0].url" alt="thumb" class="thumb mr-3"/>
+                    <div>
+                      <div class="font-weight-600">{{ p.title }}</div>
+                      <div class="text-muted small" *ngIf="p.description">{{ p.description }}</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="text-right">{{ p.points }}</td>
+                <td class="text-right">{{ p.stock }}</td>
+                <td>{{ p.category }}</td>
+                <td class="text-right">
+                  <button class="btn btn-link btn-sm" (click)="openEdit(p)">Editar</button>
+                  <button class="btn btn-link btn-sm text-danger" (click)="remove(p)">Eliminar</button>
+                  <button class="btn btn-link btn-sm" (click)="openDetails(p)">Ver</button>
+                </td>
+              </tr>
+              <tr *ngIf="!products?.length">
+                <td colspan="5" class="text-center text-muted py-4">Sin resultados</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-between p-3 border-top">
+          <div class="text-muted small">
+            Mostrando {{ offset + (products.length ? 1 : 0) }}–{{ offset + products.length }}
+          </div>
+          <ul class="pagination pagination-sm mb-0">
+            <li class="page-item" [class.disabled]="page === 1">
+              <button class="page-link" (click)="goToPage(page - 1)" [disabled]="page === 1">Anterior</button>
+            </li>
+            <li class="page-item disabled">
+              <span class="page-link">Página {{ page }}</span>
+            </li>
+            <li class="page-item" [class.disabled]="!hasNext">
+              <button class="page-link" (click)="goToPage(page + 1)" [disabled]="!hasNext">Siguiente</button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel de formulario (simple modal-like side panel) -->
+  <div class="drawer" [class.open]="showForm">
+    <div class="drawer-content">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h3 class="h5 mb-0">{{ editing ? 'Editar producto' : 'Nuevo producto' }}</h3>
+        <button class="btn btn-sm btn-outline-secondary" (click)="cancel()">Cerrar</button>
+      </div>
+
+      <form (ngSubmit)="save()" #formRef="ngForm">
+        <div class="form-group">
+          <label>Título</label>
+          <input type="text" class="form-control" name="title" [(ngModel)]="form.title" placeholder="Título del producto" required />
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+            <label>Puntos</label>
+            <input type="number" class="form-control" name="points" [(ngModel)]="form.points" min="0" required />
+          </div>
+          <div class="form-group col-md-4">
+            <label>Stock</label>
+            <input type="number" class="form-control" name="stock" [(ngModel)]="form.stock" min="0" required />
+          </div>
+          <div class="form-group col-md-4">
+            <label>Categoría</label>
+            <select class="form-control" name="category" [(ngModel)]="form.category" required>
+              <option value="" disabled>Selecciona categoría</option>
+              <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Tallas</label>
+          <select class="form-control" name="sizesSelect" [(ngModel)]="sizesSelect" multiple size="6">
+            <option *ngFor="let s of sizesOptions" [value]="s">{{ s }}</option>
+          </select>
+          <small class="form-text text-muted">Mantén Ctrl/⌘ para seleccionar múltiples.</small>
+        </div>
+        <div class="form-group">
+          <label>Descripción</label>
+          <textarea class="form-control" rows="3" name="description" [(ngModel)]="form.description" placeholder="Descripción corta"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Imágenes</label>
+          <input type="file" class="form-control-file" multiple (change)="onFilesSelected($event)" #fileInput />
+          <div class="d-flex flex-wrap mt-2">
+            <img *ngFor="let src of previews" [src]="src" class="preview mr-2 mb-2" alt="preview" />
+          </div>
+        </div>
+
+        <div class="text-right">
+          <button type="button" class="btn btn-light mr-2" (click)="cancel()">Cancelar</button>
+          <button type="submit" class="btn btn-primary" [disabled]="loading || !formRef.form.valid">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal de detalles de producto -->
+  <div class="product-modal" *ngIf="showDetail">
+    <div class="backdrop" (click)="closeDetails()"></div>
+    <div class="modal-card">
+      <div class="d-flex align-items-start justify-content-between mb-2">
+        <h3 class="h5 mb-0">Detalles del producto</h3>
+        <button class="btn btn-sm btn-outline-secondary" (click)="closeDetails()">Cerrar</button>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3 mb-md-0">
+          <div class="detail-hero d-flex align-items-center justify-content-center">
+            <img *ngIf="detail?.images?.length; else noImg" [src]="detail?.images![detailImageIndex]?.url" alt="Imagen principal"/>
+            <ng-template #noImg>
+              <div class="no-image text-muted">Sin imagen</div>
+            </ng-template>
+          </div>
+          <div class="detail-thumbs mt-2" *ngIf="detail?.images?.length">
+            <button type="button"
+                    *ngFor="let img of detail?.images; let i = index"
+                    class="thumb-btn" [class.active]="i === detailImageIndex"
+                    (click)="setDetailImage(i)">
+              <img [src]="img.url" alt="thumb"/>
+            </button>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <h4 class="h5 mb-1">{{ detail?.title }}</h4>
+          <div class="text-muted mb-2">Categoría: <span class="badge badge-light border">{{ detail?.category }}</span></div>
+          <div class="mb-2">
+            <span class="h5 mb-0 font-weight-600">{{ detail?.points }} pts</span>
+            <small class="text-muted ml-2">Stock: {{ detail?.stock }}</small>
+          </div>
+          <div class="mb-3" *ngIf="detail?.sizes?.length">
+            <div class="small text-muted mb-1">Tallas</div>
+            <div>
+              <span *ngFor="let s of detail?.sizes" class="badge badge-secondary mr-1">{{ s }}</span>
+            </div>
+          </div>
+          <p class="mb-0" *ngIf="detail?.description">{{ detail?.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
