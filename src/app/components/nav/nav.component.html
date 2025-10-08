@@ -32,6 +32,19 @@
                         </a>
                     </li>
                     <li class="divider-vertical mb-0 d-lg-none d-block"></li>
+                    <!-- Auth actions (desktop) -->
+                    <li class="nav-item d-none d-lg-block mb-0" *ngIf="!loggedIn">
+                        <a routerLink="/admin/login" class="nav-tool">
+                            <i class="cxi-user nav-tool-icon"></i>
+                            <span class="nav-tool-label">Iniciar sesión</span>
+                        </a>
+                    </li>
+                    <li class="nav-item d-none d-lg-block mb-0" *ngIf="loggedIn">
+                        <a href="javascript:void(0)" class="nav-tool" (click)="logout()">
+                            <i class="cxi-user nav-tool-icon"></i>
+                            <span class="nav-tool-label">Cerrar sesión</span>
+                        </a>
+                    </li>
                     <li class="nav-item mb-0">
                         <button class="navbar-toggler mt-n1 mr-n3" type="button" data-toggle="collapse"
                             data-target="#navbarCollapse" aria-expanded="false">
@@ -143,6 +156,13 @@
                         </div>
                     </li>
 
+                    <!-- Auth actions (mobile) inside collapsed menu -->
+                    <li class="nav-item d-lg-none" *ngIf="!loggedIn">
+                        <a routerLink="/admin/login" class="nav-link">Iniciar sesión</a>
+                    </li>
+                    <li class="nav-item d-lg-none" *ngIf="loggedIn">
+                        <a href="javascript:void(0)" class="nav-link" (click)="logout()">Cerrar sesión</a>
+                    </li>
                 </ul>
             </nav>
         </div>

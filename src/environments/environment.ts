@@ -3,7 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  // Update this to your API base URL for local dev
+  // Example for NestJS running locally: http://localhost:3000
+  apiUrl: 'http://localhost:3000/api'
 };
 
 /*

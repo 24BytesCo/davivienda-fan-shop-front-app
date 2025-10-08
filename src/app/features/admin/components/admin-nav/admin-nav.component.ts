@@ -1,21 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../core/services/auth.service';
-import { NotificationService } from '../../core/services/notification.service';
+import { AuthService } from '../../../../core/services/auth.service';
+import { NotificationService } from '../../../../core/services/notification.service';
 
 @Component({
-  selector: 'app-nav',
-  templateUrl: './nav.component.html',
-  styleUrls: ['./nav.component.css']
+  selector: 'app-admin-nav',
+  templateUrl: './admin-nav.component.html',
+  styleUrls: ['./admin-nav.component.css']
 })
-export class NavComponent implements OnInit {
+export class AdminNavComponent {
   constructor(
     private auth: AuthService,
     private router: Router,
     private notify: NotificationService
   ) {}
-
-  ngOnInit(): void {}
 
   get loggedIn(): boolean {
     return this.auth.isAuthenticated();
@@ -27,3 +25,4 @@ export class NavComponent implements OnInit {
     this.router.navigate(['/admin/login']);
   }
 }
+
