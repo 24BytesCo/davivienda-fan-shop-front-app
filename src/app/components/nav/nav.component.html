@@ -18,17 +18,11 @@
             <!-- Toolbar -->
             <div class="d-flex align-items-center order-lg-3">
                 <ul class="nav nav-tools flex-nowrap">
-                    <li class="nav-item d-lg-block d-none mb-0">
-                        <a href="account-wishlist.html" class="nav-tool">
-                            <i class="cxi-heart nav-tool-icon"></i>
-                            <span class="nav-tool-label">2</span>
-                        </a>
-                    </li>
-                    <li class="divider-vertical mb-0 d-lg-block d-none"></li>
+                    <!-- Wishlist deshabilitado: la API no tiene favoritos -->
                     <li class="nav-item align-self-center mb-0">
-                        <a href="#" class="nav-tool pr-lg-0" data-toggle="offcanvas" data-target="cart">
+                        <a href="#" class="nav-tool pr-lg-0" (click)="openCart($event)">
                             <i class="cxi-cart nav-tool-icon"></i>
-                            <span class="badge badge-success align-middle mt-n1 ml-2 px-2 py-1 font-size-xs">4</span>
+                            <span class="badge badge-success align-middle mt-n1 ml-2 px-2 py-1 font-size-xs">{{ (cartCount$ | async) || 0 }}</span>
                         </a>
                     </li>
                     <li class="divider-vertical mb-0 d-lg-none d-block"></li>
@@ -66,105 +60,51 @@
                     </div>
                 </div>
                 <!-- Menu -->
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a routerLink="/" class="nav-link active">Home</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Shop</a>
-                        <ul class="dropdown-menu">
-                            <li><a href="shop-catalog.html" class="dropdown-item">Catalog with Filters</a></li>
-                            <li><a href="shop-single.html" class="dropdown-item">Single Product</a></li>
-                            <li><a href="checkout.html" class="dropdown-item">Checkout</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown mega-dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Megamenu</a>
-                        <div class="dropdown-menu">
-                            <div class="container pt-lg-1 pb-lg-3">
-                                <div class="row">
-                                    <div class="col-lg-2 col-md-3 py-2">
-                                        <ul class="list-unstyled">
-                                            <li><a href="#" class="dropdown-item">New collection</a></li>
-                                            <li><a href="#" class="dropdown-item">Best sellers</a></li>
-                                            <li><a href="#" class="dropdown-item">Plus size</a></li>
-                                            <li><a href="#" class="dropdown-item text-danger">Sale up to 70%</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-lg-2 col-md-3 py-2">
-                                        <h4 class="font-size-sm text-uppercase pt-1 mb-2">Clothes</h4>
-                                        <ul class="list-unstyled">
-                                            <li><a href="#" class="dropdown-item">Coats</a></li>
-                                            <li><a href="#" class="dropdown-item">Jackets</a></li>
-                                            <li><a href="#" class="dropdown-item">Suits</a></li>
-                                            <li><a href="#" class="dropdown-item">Dresses</a></li>
-                                            <li><a href="#" class="dropdown-item">Cardigans &amp; sweaters</a></li>
-                                            <li><a href="#" class="dropdown-item">Sweatshirts &amp; hoodies</a></li>
-                                            <li><a href="#" class="dropdown-item">T-shirts &amp; tops</a></li>
-                                            <li><a href="#" class="dropdown-item">Pants</a></li>
-                                            <li><a href="#" class="dropdown-item">Jeans</a></li>
-                                            <li><a href="#" class="dropdown-item">Shorts</a></li>
-                                            <li><a href="#" class="dropdown-item">Skirts</a></li>
-                                            <li><a href="#" class="dropdown-item">Lingerie &amp; nightwear</a></li>
-                                            <li><a href="#" class="dropdown-item">Sportswear</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-lg-2 col-md-3 py-2">
-                                        <h4 class="font-size-sm text-uppercase pt-1 mb-2">Shoes</h4>
-                                        <ul class="list-unstyled">
-                                            <li><a href="#" class="dropdown-item">Boots</a></li>
-                                            <li><a href="#" class="dropdown-item">Flat shoes</a></li>
-                                            <li><a href="#" class="dropdown-item">Heels</a></li>
-                                            <li><a href="#" class="dropdown-item">Sandals</a></li>
-                                            <li><a href="#" class="dropdown-item">Mules</a></li>
-                                            <li><a href="#" class="dropdown-item">Sliders</a></li>
-                                            <li><a href="#" class="dropdown-item">Slippers</a></li>
-                                            <li><a href="#" class="dropdown-item">Sneakers</a></li>
-                                            <li><a href="#" class="dropdown-item">Leather</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-lg-2 col-md-3 py-2">
-                                        <h4 class="font-size-sm text-uppercase pt-1 mb-2">Accessories</h4>
-                                        <ul class="list-unstyled">
-                                            <li><a href="#" class="dropdown-item">Bags &amp; backpacks</a></li>
-                                            <li><a href="#" class="dropdown-item">Hats &amp; scarves</a></li>
-                                            <li><a href="#" class="dropdown-item">Hair accessories</a></li>
-                                            <li><a href="#" class="dropdown-item">Belts</a></li>
-                                            <li><a href="#" class="dropdown-item">Jewellery</a></li>
-                                            <li><a href="#" class="dropdown-item">Watches</a></li>
-                                            <li><a href="#" class="dropdown-item">Sunglasses</a></li>
-                                            <li><a href="#" class="dropdown-item">Purses</a></li>
-                                            <li><a href="#" class="dropdown-item">Socks &amp; tights</a></li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-lg-1 d-none d-lg-block py-2">
-                                        <span class="divider-vertical h-100 mx-auto"></span>
-                                    </div>
-                                    <div class="col-lg-3 d-none d-lg-block py-2">
-                                        <a href="#" class="d-block text-decoration-none pt-1">
-                                            <img src="assets/img/ecommerce/megamenu.jpg" class="d-block rounded mb-3"
-                                                alt="Promo banner">
-                                            <h5 class="font-size-sm mb-3">Back to school. Sale up to 50%</h5>
-                                            <div class="btn btn-outline-primary btn-sm">
-                                                See offers
-                                                <i class="cxi-arrow-right ml-1"></i>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
 
-                    <!-- Auth actions (mobile) inside collapsed menu -->
-                    <li class="nav-item d-lg-none" *ngIf="!loggedIn">
-                        <a routerLink="/admin/login" class="nav-link">Iniciar sesión</a>
-                    </li>
-                    <li class="nav-item d-lg-none" *ngIf="loggedIn">
-                        <a href="javascript:void(0)" class="nav-link" (click)="logout()">Cerrar sesión</a>
-                    </li>
-                </ul>
             </nav>
         </div>
     </div>
 </header>
+
+<!-- Cart Drawer -->
+<div class="cart-drawer" [class.open]="showCartDrawer">
+  <div class="backdrop" (click)="closeCart()"></div>
+  <div class="panel">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <h4 class="h6 mb-0">Tu carrito</h4>
+      <button class="btn btn-sm btn-outline-secondary" (click)="closeCart()">Cerrar</button>
+    </div>
+
+    <div *ngIf="(cart$ | async) as cart">
+      <div *ngIf="cart.items.length; else empty">
+        <div class="cart-item d-flex align-items-center" *ngFor="let it of cart.items">
+          <img *ngIf="it.product && it.product.images && it.product.images.length > 0" [src]="it.product.images[0].url" alt="img" class="thumb mr-2">
+          <div *ngIf="!(it.product && it.product.images && it.product.images.length > 0)" class="thumb mr-2 d-flex align-items-center justify-content-center text-muted" style="background:#f2f4f7;">
+            <i class="cxi-image"></i>
+          </div>
+          <div class="flex-fill">
+            <div class="font-weight-600" style="font-size: 0.95rem;">{{ it.product?.title || ('Producto ' + it.productId) }}</div>
+            <div class="text-muted" style="font-size: .75rem;">ID: {{ it.product?.id || it.productId }}</div>
+            <div class="text-muted small mt-1">Stock: {{ it.product?.stock ?? '-' }} · Puntos x unidad: {{ it.product?.points || 0 }}</div>
+            <div class="qty mt-1">
+              <button class="btn btn-sm btn-light" (click)="dec(it)">-</button>
+              <span class="mx-2">{{ it.quantity }}</span>
+              <button class="btn btn-sm btn-light" (click)="inc(it)">+</button>
+              <button class="btn btn-sm btn-link text-danger ml-2" (click)="remove(it)">Quitar</button>
+            </div>
+          </div>
+        </div>
+        <div class="border-top pt-2 mt-3 d-flex justify-content-between">
+          <span class="small text-muted">Artículos: {{ cart.items.length }}</span>
+          <span class="font-weight-600">Total pts: {{ totalPoints(cart) }}</span>
+        </div>
+        <div class="text-right mt-3">
+          <button class="btn btn-primary">Ir a pagar</button>
+        </div>
+      </div>
+      <ng-template #empty>
+        <div class="text-center text-muted py-5">Tu carrito está vacío</div>
+      </ng-template>
+    </div>
+  </div>
+</div>
