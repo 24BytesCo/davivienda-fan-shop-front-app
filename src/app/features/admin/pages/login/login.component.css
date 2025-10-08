@@ -1,0 +1,43 @@
+/* Modern, clean auth screen */
+.auth-bg {
+  background: linear-gradient(135deg, #f6f9ff 0%, #eef2ff 40%, #ffffff 100%);
+}
+
+.auth-card {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(118, 109, 244, 0.08);
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px rgba(30, 33, 44, 0.08);
+  backdrop-filter: saturate(140%) blur(8px);
+}
+
+.auth-switch .nav-link {
+  border-radius: 999px;
+  color: #6c757d;
+}
+.auth-switch .nav-link.active {
+  color: #fff;
+  background: #766df4; /* theme primary */
+  box-shadow: 0 6px 16px rgba(118, 109, 244, 0.35);
+}
+
+.form-control-lg {
+  border-radius: 0.75rem;
+}
+
+.btn-block {
+  border-radius: 0.75rem;
+  padding-top: 0.7rem;
+  padding-bottom: 0.7rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .auth-bg {
+    background: linear-gradient(135deg, #0f1222 0%, #12162a 50%, #161a33 100%);
+  }
+  .auth-card {
+    background: rgba(20, 23, 39, 0.85);
+    border-color: rgba(118, 109, 244, 0.15);
+  }
+}
+

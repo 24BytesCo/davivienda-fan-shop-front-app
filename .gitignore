@@ -4,6 +4,7 @@
 /dist
 /tmp
 /out-tsc
+/.angular/cache
 # Only exists if Bazel was run
 /bazel-out
 
@@ -12,9 +13,12 @@
 
 # profiling files
 chrome-profiler-events*.json
+*.tsbuildinfo
+.eslintcache
 
 # IDEs and editors
 /.idea
+/.vs
 .project
 .classpath
 .c9/
@@ -35,10 +39,16 @@ chrome-profiler-events*.json
 /connect.lock
 /coverage
 /libpeerconnection.log
-npm-debug.log
-yarn-error.log
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 testem.log
 /typings
+.node_repl_history
+.env
+.env.local
+.env.*.local
 
 # System Files
 .DS_Store

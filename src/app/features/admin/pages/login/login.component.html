@@ -1,0 +1,89 @@
+<main class="auth-bg d-flex align-items-center min-vh-100 py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5">
+        <div class="auth-card rounded-4 shadow-lg p-4 p-md-5">
+          <div class="text-center mb-4">
+            <a routerLink="/" class="d-inline-flex align-items-center text-decoration-none">
+              <img src="assets/img/ecommerce/logo.svg" alt="Logo" width="120" class="mr-2">
+            </a>
+            <h1 class="h4 mt-3 mb-1">{{ isRegister ? 'Crear cuenta' : 'Bienvenido de nuevo' }}</h1>
+            <p class="text-muted mb-0">{{ isRegister ? 'Crea tu cuenta en segundos' : 'Inicia sesión para continuar' }}</p>
+          </div>
+
+          <ul class="nav nav-pills nav-fill rounded-pill bg-light p-1 mb-4 auth-switch" role="tablist">
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" [class.active]="!isRegister" href="javascript:void(0)" role="tab" (click)="isRegister=false">Iniciar sesión</a>
+            </li>
+            <li class="nav-item" role="presentation">
+              <a class="nav-link" [class.active]="isRegister" href="javascript:void(0)" role="tab" (click)="isRegister=true">Crear cuenta</a>
+            </li>
+          </ul>
+
+          <!-- Login -->
+          <form *ngIf="!isRegister" (ngSubmit)="submit()" novalidate>
+            <div class="form-group">
+              <label for="email">Correo electrónico</label>
+              <input id="email" type="email" class="form-control form-control-lg" placeholder="tu@correo.com" required name="email" [(ngModel)]="email">
+            </div>
+            <div class="form-group">
+              <div class="d-flex align-items-center justify-content-between">
+                <label for="password" class="mb-0">Contraseña</label>
+                <a href="#" class="font-size-sm text-decoration-none">¿Olvidaste tu contraseña?</a>
+              </div>
+              <div class="cs-password-toggle input-group-overlay">
+                <input id="password" type="password" class="form-control form-control-lg appended-form-control" placeholder="Tu contraseña" required name="password" [(ngModel)]="password">
+                <div class="input-group-append-overlay">
+                  <label class="btn cs-password-toggle-btn input-group-text">
+                    <input type="checkbox" class="custom-control-input">
+                    <i class="cxi-eye cs-password-toggle-indicator"></i>
+                    <span class="sr-only">Mostrar contraseña</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Iniciar sesión</button>
+            <p class="text-center text-muted mt-3 mb-0">¿No tienes una cuenta? <a href="javascript:void(0)" (click)="isRegister=true">Crear cuenta</a></p>
+          </form>
+
+          <!-- Register -->
+          <form *ngIf="isRegister" (ngSubmit)="quickRegister()" novalidate>
+            <div class="form-row">
+              <div class="form-group col-sm-6">
+                <label for="regFirstName">Nombres</label>
+                <input id="regFirstName" type="text" class="form-control form-control-lg" placeholder="Nombres" required name="regFirstName" [(ngModel)]="regFirstName">
+              </div>
+              <div class="form-group col-sm-6">
+                <label for="regLastName">Apellidos</label>
+                <input id="regLastName" type="text" class="form-control form-control-lg" placeholder="Apellidos" required name="regLastName" [(ngModel)]="regLastName">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="regEmail">Correo electrónico</label>
+              <input id="regEmail" type="email" class="form-control form-control-lg" placeholder="tu@correo.com" required name="regEmail" [(ngModel)]="regEmail">
+            </div>
+            <div class="form-group">
+              <label for="regPassword">Contraseña</label>
+              <div class="cs-password-toggle input-group-overlay">
+                <input id="regPassword" type="password" class="form-control form-control-lg appended-form-control" placeholder="Crea una contraseña" required name="regPassword" [(ngModel)]="regPassword">
+                <div class="input-group-append-overlay">
+                  <label class="btn cs-password-toggle-btn input-group-text">
+                    <input type="checkbox" class="custom-control-input">
+                    <i class="cxi-eye cs-password-toggle-indicator"></i>
+                    <span class="sr-only">Mostrar contraseña</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="custom-control custom-checkbox mb-3">
+              <input id="remember" type="checkbox" class="custom-control-input" [(ngModel)]="remember" name="remember">
+              <label class="custom-control-label" for="remember">Recordarme en este dispositivo</label>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg btn-block">Crear cuenta</button>
+            <p class="text-center text-muted mt-3 mb-0">¿Ya tienes una cuenta? <a href="javascript:void(0)" (click)="isRegister=false">Inicia sesión</a></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
