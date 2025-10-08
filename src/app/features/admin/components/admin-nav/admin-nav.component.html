@@ -1,6 +1,6 @@
 <header class="admin-header navbar navbar-light bg-light border-bottom">
   <div class="container d-flex justify-content-between align-items-center py-2">
-    <a routerLink="/admin" class="navbar-brand mb-0 h5">Admin</a>
+    <a routerLink="/admin" class="navbar-brand mb-0 h5">Hola {{ nombreUsuario }} | {{ rolUsuario }}</a>
 
     <div>
       <a *ngIf="!loggedIn" routerLink="/admin/login" class="btn btn-outline-primary btn-sm">Iniciar sesión</a>

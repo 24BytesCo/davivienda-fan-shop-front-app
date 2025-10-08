@@ -8,6 +8,7 @@ import { NotificationService } from '../../core/services/notification.service';
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.css']
 })
+/** Cabecera de la web pública: login/logout según sesión. */
 export class NavComponent implements OnInit {
   constructor(
     private auth: AuthService,
@@ -17,10 +18,12 @@ export class NavComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  /** Indica si existe sesión activa */
   get loggedIn(): boolean {
     return this.auth.isAuthenticated();
   }
 
+  /** Cierra la sesión actual y redirige a login */
   logout(): void {
     this.auth.logout();
     this.notify.toastSuccess('Sesión cerrada');

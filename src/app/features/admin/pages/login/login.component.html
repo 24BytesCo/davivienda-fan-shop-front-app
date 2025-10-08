@@ -51,15 +51,9 @@
 
           <!-- Register -->
           <form *ngIf="isRegister" (ngSubmit)="quickRegister()" novalidate>
-            <div class="form-row">
-              <div class="form-group col-sm-6">
-                <label for="regFirstName">Nombres</label>
-                <input id="regFirstName" type="text" class="form-control form-control-lg" placeholder="Nombres" required name="regFirstName" [(ngModel)]="regFirstName">
-              </div>
-              <div class="form-group col-sm-6">
-                <label for="regLastName">Apellidos</label>
-                <input id="regLastName" type="text" class="form-control form-control-lg" placeholder="Apellidos" required name="regLastName" [(ngModel)]="regLastName">
-              </div>
+            <div class="form-group">
+              <label for="regFullName">Nombre completo</label>
+              <input id="regFullName" type="text" class="form-control form-control-lg" placeholder="Tu nombre completo" required name="regFullName" [(ngModel)]="regFullName">
             </div>
             <div class="form-group">
               <label for="regEmail">Correo electrónico</label>
@@ -77,10 +71,6 @@
                   </label>
                 </div>
               </div>
-            </div>
-            <div class="custom-control custom-checkbox mb-3">
-              <input id="remember" type="checkbox" class="custom-control-input" [(ngModel)]="remember" name="remember">
-              <label class="custom-control-label" for="remember">Recordarme en este dispositivo</label>
             </div>
             <div *ngIf="error" class="alert alert-danger mt-3" role="alert">{{ error }}</div>
             <button type="submit" class="btn btn-primary btn-lg btn-block" [disabled]="loading">
