@@ -13,6 +13,7 @@ import { NotificationService } from '../services/notification.service';
 import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 
+/** Interceptor HTTP para adjuntar token y manejar 401. */
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   constructor(
@@ -21,6 +22,7 @@ export class AuthInterceptor implements HttpInterceptor {
     private notify: NotificationService
   ) {}
 
+  /** Intercepta solicitudes y agrega Authorization cuando aplica. */
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let authReq = req;
     const token = this.auth.getToken();

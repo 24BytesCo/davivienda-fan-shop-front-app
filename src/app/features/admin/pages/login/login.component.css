@@ -1,4 +1,4 @@
-/* Modern, clean auth screen */
+/* Pantalla de autenticación moderna y limpia */
 .auth-bg {
   background: linear-gradient(135deg, #f6f9ff 0%, #eef2ff 40%, #ffffff 100%);
 }
@@ -17,7 +17,7 @@
 }
 .auth-switch .nav-link.active {
   color: #fff;
-  background: #766df4; /* theme primary */
+  background: #766df4; /* color primario del tema */
   box-shadow: 0 6px 16px rgba(118, 109, 244, 0.35);
 }
 
@@ -40,4 +40,3 @@
     border-color: rgba(118, 109, 244, 0.15);
   }
 }
-

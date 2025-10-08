@@ -6,9 +6,15 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "start:volta": "\"C:\\Program Files\\Volta\\volta.exe\" run node ./node_modules/@angular/cli/bin/ng serve",
+    "build:volta": "\"C:\\Program Files\\Volta\\volta.exe\" run node ./node_modules/@angular/cli/bin/ng build"
   },
   "private": true,
+  "engines": {
+    "node": "14.x",
+    "npm": "6.x"
+  },
   "dependencies": {
     "@angular/animations": "~12.1.0",
     "@angular/common": "~12.1.0",
@@ -36,5 +42,9 @@
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
     "typescript": "~4.3.2"
+  },
+  "volta": {
+    "node": "14.21.3",
+    "npm": "6.14.18"
   }
 }
