@@ -6,12 +6,14 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { LoginComponent } from './pages/login/login.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { AdminNavComponent } from './components/admin-nav/admin-nav.component';
+import { ProductsAdminComponent } from './components/products-admin/products-admin.component';
 
 @NgModule({
   declarations: [
     LoginComponent,
     DashboardComponent,
-    AdminNavComponent
+    AdminNavComponent,
+    ProductsAdminComponent
   ],
   imports: [
     CommonModule,
