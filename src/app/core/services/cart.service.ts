@@ -44,7 +44,7 @@ constructor(private http: HttpClient, private notify: NotificationService, priva
       return this.http.post<any>(`${this.baseUrl}/items`, payload).pipe(
         map(res => this.unwrapCart(res)),
         map(cart => this.mergeProductHint(cart, productId, productHint)),
-        tap(cart => { this.cartSubject.next(cart); this.writeLocal(cart); this.notify.toastSuccess('Añadido al carrito'); }),
+        tap(cart => { this.cartSubject.next(cart); this.writeLocal(cart); this.notify.toastSuccessLeft('Añadido al carrito'); }),
         catchError(() => this.addFallbackLocal(productId, quantity, productHint))
       );
     }
@@ -83,6 +83,7 @@ constructor(private http: HttpClient, private notify: NotificationService, priva
     if (idx >= 0) current.items[idx].quantity = quantity; else current.items.push({ productId, quantity });
     this.cartSubject.next(current);
     this.writeLocal(current);
+    this.notify.toastSuccessLeft('Añadido al carrito');
     return of(current);
   }
 
@@ -131,7 +132,8 @@ constructor(private http: HttpClient, private notify: NotificationService, priva
         productId: i.productId ?? i.productoId ?? i.product?.id ?? i.producto?.id,
         quantity: i.quantity ?? i.cantidad ?? 1,
         product: i.product ?? i.producto
-      }))
+      })),
+      summary: data.summary
     };
   }
 

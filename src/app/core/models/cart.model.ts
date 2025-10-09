@@ -12,5 +12,5 @@ export interface Cart {
   items: CartItem[];
   totalItems?: number;
   totalPoints?: number;
+  summary?: { totalPoints: number; items: number };
 }
-

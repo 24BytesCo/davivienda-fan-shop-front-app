@@ -2,10 +2,16 @@
   <div class="container d-flex justify-content-between align-items-center py-2">
     <a routerLink="/admin" class="navbar-brand mb-0 h5">Hola {{ nombreUsuario }} | {{ rolUsuario }}</a>
 
-    <div>
+    <div class="d-flex align-items-center">
       <a *ngIf="!loggedIn" routerLink="/admin/login" class="btn btn-outline-primary btn-sm">Iniciar sesión</a>
-      <button *ngIf="loggedIn" (click)="logout()" class="btn btn-outline-secondary btn-sm">Cerrar sesión</button>
+      <ng-container *ngIf="loggedIn">
+        <button class="btn btn-outline-primary btn-sm mr-2" routerLink="/">Ir a Tienda</button>
+        <button *ngIf="isAdmin" class="btn btn-outline-primary btn-sm mr-2" (click)="openConfigMenu()">Configuración</button>
+        <button (click)="logout()" class="btn btn-outline-secondary btn-sm">Cerrar sesión</button>
+      </ng-container>
     </div>
   </div>
 </header>
 
+<!-- Modal de menú de configuración global -->
+<app-config-menu-modal [(open)]="showConfigMenu"></app-config-menu-modal>

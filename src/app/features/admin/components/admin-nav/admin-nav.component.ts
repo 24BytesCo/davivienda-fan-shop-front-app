@@ -13,17 +13,18 @@ export class AdminNavComponent {
 
   nombreUsuario: string = '';
   rolUsuario: string = '';
+  showConfigMenu = false;
 
   constructor(
     private auth: AuthService,
     private router: Router,
-    private notify: NotificationService
+    private notify: NotificationService,
   ) {
     // Consultando los datos del usuario
-    var user = this.auth.getUser();
+    const user = this.auth.getUser();
     console.log('Usuario autenticado:', user);
     this.nombreUsuario = user?.fullName || '';
-    this.rolUsuario = user?.role || ''; 
+    this.rolUsuario = user?.role || '';
   }
 
   /** Indica si hay sesión autenticada */
@@ -37,5 +38,12 @@ export class AdminNavComponent {
     this.notify.toastSuccess('Sesión cerrada');
     this.router.navigate(['/admin/login']);
   }
-}
 
+  openConfigMenu(): void { this.showConfigMenu = true; }
+  onConfigMenuChange(v: boolean): void { this.showConfigMenu = v; }
+
+  get isAdmin(): boolean {
+    const r = String(this.rolUsuario || '').toLowerCase();
+    return r.includes('admin');
+  }
+}

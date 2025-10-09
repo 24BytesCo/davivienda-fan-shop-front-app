@@ -69,4 +69,11 @@ export class NavComponent implements OnInit {
       return t + qty * pts;
     }, 0);
   }
+
+  /** Indica si el usuario autenticado es administrador */
+  get isAdmin(): boolean {
+    const role = this.auth.getUser()?.role || '';
+    const r = String(role).toLowerCase();
+    return r.includes('admin');
+  }
 }

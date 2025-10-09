@@ -10,6 +10,10 @@ const routes: Routes = [
     path: 'admin',
     loadChildren: () => import('./features/admin/admin.module').then(m => m.AdminModule)
   },
+  {
+    path: 'usuario',
+    loadChildren: () => import('./features/user/user.module').then(m => m.UserModule)
+  },
   { path: '**', redirectTo: '' }
 ];
 

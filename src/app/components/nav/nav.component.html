@@ -18,13 +18,7 @@
             <!-- Toolbar -->
             <div class="d-flex align-items-center order-lg-3">
                 <ul class="nav nav-tools flex-nowrap">
-                    <!-- Wishlist deshabilitado: la API no tiene favoritos -->
-                    <li class="nav-item align-self-center mb-0">
-                        <a href="#" class="nav-tool pr-lg-0" (click)="openCart($event)">
-                            <i class="cxi-cart nav-tool-icon"></i>
-                            <span class="badge badge-success align-middle mt-n1 ml-2 px-2 py-1 font-size-xs">{{ (cartCount$ | async) || 0 }}</span>
-                        </a>
-                    </li>
+
                     <li class="divider-vertical mb-0 d-lg-none d-block"></li>
                     <!-- Auth actions (desktop) -->
                     <li class="nav-item d-none d-lg-block mb-0" *ngIf="!loggedIn">
@@ -34,6 +28,11 @@
                         </a>
                     </li>
                     <li class="nav-item d-none d-lg-block mb-0" *ngIf="loggedIn">
+                        <!-- Dashboard solo para administradores -->
+                        <a routerLink="/admin/dashboard" class="nav-tool" *ngIf="isAdmin">
+                            <i class="cxi-home nav-tool-icon"></i>
+                            <span class="nav-tool-label">Dashboard</span>
+                        </a>
                         <a href="javascript:void(0)" class="nav-tool" (click)="logout()">
                             <i class="cxi-user nav-tool-icon"></i>
                             <span class="nav-tool-label">Cerrar sesión</span>
@@ -44,6 +43,13 @@
                             data-target="#navbarCollapse" aria-expanded="false">
                             <span class="navbar-toggler-icon"></span>
                         </button>
+                    </li>
+                    <li class="nav-item align-self-center mb-0">
+                        <a href="#" class="nav-tool pr-lg-0" (click)="openCart($event)">
+                            <i class="cxi-cart nav-tool-icon"></i>
+                            <span class="badge badge-success align-middle mt-n1 ml-2 px-2 py-1 font-size-xs">{{
+                                (cartCount$ | async) || 0 }}</span>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -68,43 +74,49 @@
 
 <!-- Cart Drawer -->
 <div class="cart-drawer" [class.open]="showCartDrawer">
-  <div class="backdrop" (click)="closeCart()"></div>
-  <div class="panel">
-    <div class="d-flex align-items-center justify-content-between mb-3">
-      <h4 class="h6 mb-0">Tu carrito</h4>
-      <button class="btn btn-sm btn-outline-secondary" (click)="closeCart()">Cerrar</button>
-    </div>
+    <div class="backdrop" (click)="closeCart()"></div>
+    <div class="panel">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <h4 class="h6 mb-0">Tu carrito</h4>
+            <button class="btn btn-sm btn-outline-secondary" (click)="closeCart()">Cerrar</button>
+        </div>
 
-    <div *ngIf="(cart$ | async) as cart">
-      <div *ngIf="cart.items.length; else empty">
-        <div class="cart-item d-flex align-items-center" *ngFor="let it of cart.items">
-          <img *ngIf="it.product && it.product.images && it.product.images.length > 0" [src]="it.product.images[0].url" alt="img" class="thumb mr-2">
-          <div *ngIf="!(it.product && it.product.images && it.product.images.length > 0)" class="thumb mr-2 d-flex align-items-center justify-content-center text-muted" style="background:#f2f4f7;">
-            <i class="cxi-image"></i>
-          </div>
-          <div class="flex-fill">
-            <div class="font-weight-600" style="font-size: 0.95rem;">{{ it.product?.title || ('Producto ' + it.productId) }}</div>
-            <div class="text-muted" style="font-size: .75rem;">ID: {{ it.product?.id || it.productId }}</div>
-            <div class="text-muted small mt-1">Stock: {{ it.product?.stock ?? '-' }} · Puntos x unidad: {{ it.product?.points || 0 }}</div>
-            <div class="qty mt-1">
-              <button class="btn btn-sm btn-light" (click)="dec(it)">-</button>
-              <span class="mx-2">{{ it.quantity }}</span>
-              <button class="btn btn-sm btn-light" (click)="inc(it)">+</button>
-              <button class="btn btn-sm btn-link text-danger ml-2" (click)="remove(it)">Quitar</button>
+        <div *ngIf="(cart$ | async) as cart">
+            <div *ngIf="cart.items.length; else empty">
+                <div class="cart-item d-flex align-items-center" *ngFor="let it of cart.items">
+                    <img *ngIf="it.product && it.product.images && it.product.images.length > 0"
+                        [src]="it.product.images[0].url" alt="img" class="thumb mr-2">
+                    <div *ngIf="!(it.product && it.product.images && it.product.images.length > 0)"
+                        class="thumb mr-2 d-flex align-items-center justify-content-center text-muted"
+                        style="background:#f2f4f7;">
+                        <i class="cxi-image"></i>
+                    </div>
+                    <div class="flex-fill">
+                        <div class="font-weight-600" style="font-size: 0.95rem;">{{ it.product?.title || ('Producto ' +
+                            it.productId) }}</div>
+                        <div class="text-muted" style="font-size: .75rem;">ID: {{ it.product?.id || it.productId }}
+                        </div>
+                        <div class="text-muted small mt-1">Stock: {{ it.product?.stock ?? '-' }} · Puntos x unidad: {{
+                            it.product?.points || 0 }}</div>
+                        <div class="qty mt-1">
+                            <button class="btn btn-sm btn-light" (click)="dec(it)">-</button>
+                            <span class="mx-2">{{ it.quantity }}</span>
+                            <button class="btn btn-sm btn-light" (click)="inc(it)">+</button>
+                            <button class="btn btn-sm btn-link text-danger ml-2" (click)="remove(it)">Quitar</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-top pt-2 mt-3 d-flex justify-content-between">
+                    <span class="small text-muted">Artículos: {{ cart.items.length }}</span>
+                    <span class="font-weight-600">Total pts: {{ totalPoints(cart) }}</span>
+                </div>
+                <div class="text-right mt-3">
+                    <a class="btn btn-primary" routerLink="/checkout" (click)="closeCart()">Ir a pagar</a>
+                </div>
             </div>
-          </div>
+            <ng-template #empty>
+                <div class="text-center text-muted py-5">Tu carrito está vacío</div>
+            </ng-template>
         </div>
-        <div class="border-top pt-2 mt-3 d-flex justify-content-between">
-          <span class="small text-muted">Artículos: {{ cart.items.length }}</span>
-          <span class="font-weight-600">Total pts: {{ totalPoints(cart) }}</span>
-        </div>
-        <div class="text-right mt-3">
-          <button class="btn btn-primary">Ir a pagar</button>
-        </div>
-      </div>
-      <ng-template #empty>
-        <div class="text-center text-muted py-5">Tu carrito está vacío</div>
-      </ng-template>
     </div>
-  </div>
 </div>

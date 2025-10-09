@@ -37,10 +37,19 @@ export class NotificationService {
   /**
    * Muestra un toast genérico en la esquina superior derecha.
    */
-  private toast(title: string, icon: 'success' | 'error' | 'info' | 'warning'): void {
+  /** Muestra un toast de éxito en la esquina superior izquierda. */
+  toastSuccessLeft(title: string): void {
+    this.toast(title, 'success', 'top-start');
+  }
+
+  /**
+   * Muestra un toast genérico en la esquina indicada.
+   * Posiciones válidas SweetAlert2: 'top', 'top-start', 'top-end', 'center', 'bottom-start', etc.
+   */
+  private toast(title: string, icon: 'success' | 'error' | 'info' | 'warning', position: 'top-end' | 'top-start' | 'top' | 'bottom-start' | 'bottom-end' | 'center' = 'top-end'): void {
     const Toast = Swal.mixin({
       toast: true,
-      position: 'top-end',
+      position,
       showConfirmButton: false,
       timer: 2500,
       timerProgressBar: true
