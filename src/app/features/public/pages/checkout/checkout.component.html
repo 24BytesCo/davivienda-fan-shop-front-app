@@ -1,0 +1,93 @@
+<app-nav></app-nav>
+
+<div class="container py-4" *ngIf="cart as c; else loadingTpl">
+  <h1 class="h4 mb-3">Checkout</h1>
+
+  <div class="row">
+    <div class="col-md-7">
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="payPoints" class="custom-control-input" name="mode" [checked]="mode==='puntos'" (change)="switchMode('puntos')">
+            <label class="custom-control-label" for="payPoints">Pagar con puntos</label>
+          </div>
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" id="payMoney" class="custom-control-input" name="mode" [checked]="mode==='dinero'" (change)="switchMode('dinero')">
+            <label class="custom-control-label" for="payMoney">Pagar con dinero</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" *ngIf="mode==='dinero'">
+        <div class="card-header">Datos de la tarjeta (simulado)</div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-group col-md-8">
+              <label>Número</label>
+              <input class="form-control" [(ngModel)]="cardNumber" name="cardNumber" placeholder="0000 0000 0000 0000">
+            </div>
+            <div class="form-group col-md-4">
+              <label>Nombre en tarjeta</label>
+              <input class="form-control" [(ngModel)]="nameOnCard" name="nameOnCard" placeholder="Tu Nombre">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-4">
+              <label>MM</label>
+              <input class="form-control" [(ngModel)]="expMonth" name="expMonth" placeholder="MM">
+            </div>
+            <div class="form-group col-4">
+              <label>YY</label>
+              <input class="form-control" [(ngModel)]="expYear" name="expYear" placeholder="YY">
+            </div>
+            <div class="form-group col-4">
+              <label>CVC</label>
+              <input class="form-control" [(ngModel)]="cvc" name="cvc" placeholder="CVC">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Cuotas</label>
+            <select class="form-control" [(ngModel)]="installments" name="installments">
+              <option *ngFor="let i of [1,2,3,4,5,6,9,12]" [value]="i">{{ i }}</option>
+            </select>
+          </div>
+          <div class="alert alert-info" *ngIf="tasa">Tasa actual: {{ tasa | number }} COP por punto</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-5">
+      <div class="card">
+        <div class="card-header">Resumen</div>
+        <div class="card-body">
+          <div *ngFor="let it of c.items" class="d-flex align-items-center mb-2">
+            <img *ngIf="it.product && it.product.images && it.product.images.length > 0" [src]="it.product.images[0].url" class="mr-2" style="width:48px;height:48px;object-fit:cover;border-radius:.35rem;">
+            <div class="flex-fill">
+              <div class="font-weight-600 small">{{ it.product?.title || it.productId }}</div>
+              <div class="text-muted small">x{{ it.quantity }} · {{ it.product?.points || 0 }} pts</div>
+            </div>
+            <div class="font-weight-600">{{ (it.quantity || 0) * (it.product?.points || 0) }} pts</div>
+          </div>
+          <hr>
+          <div class="d-flex justify-content-between">
+            <div>Total puntos</div>
+            <div class="h5 mb-0">{{ getTotalPoints() }} pts</div>
+          </div>
+          <div class="d-flex justify-content-between" *ngIf="mode==='dinero'">
+            <div>Total a pagar</div>
+            <div class="h5 mb-0">{{ totalCop | number:'1.0-0' }} COP</div>
+          </div>
+          <button class="btn btn-primary btn-block mt-3" [disabled]="loading" (click)="pay()">
+            {{ loading ? 'Procesando…' : (mode==='puntos' ? 'Pagar con puntos' : 'Pagar con dinero') }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loadingTpl>
+  <div class="container py-5 text-center text-muted">Cargando…</div>
+</ng-template>
+
+<app-footer></app-footer>

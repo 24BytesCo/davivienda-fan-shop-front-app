@@ -1,0 +1,39 @@
+<app-admin-nav></app-admin-nav>
+
+<div class="container py-4">
+  <div class="d-flex align-items-center justify-content-between mb-3">
+    <h1 class="h4 mb-0">Configuración</h1>
+    <button class="btn btn-outline-primary" (click)="openOptions()">Abrir opciones</button>
+  </div>
+
+  <!-- Área de contenido de la opción seleccionada -->
+  <router-outlet></router-outlet>
+
+  <!-- Modal de opciones -->
+  <div class="cfg-modal" [class.open]="showOptions">
+    <div class="cfg-backdrop" (click)="closeOptions()"></div>
+    <div class="cfg-panel" role="dialog" aria-modal="true">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <h2 class="h6 mb-0">Elige qué quieres configurar</h2>
+        <button class="btn btn-sm btn-outline-secondary" (click)="closeOptions()">Cerrar</button>
+      </div>
+
+      <div class="list-group">
+        <button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" (click)="goTo('tasa')">
+          <span>
+            <strong>Tasa de conversión</strong>
+            <small class="d-block text-muted">COP por punto</small>
+          </span>
+          <span class="text-muted">›</span>
+        </button>
+        <button class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" (click)="goTo('puntos')">
+          <span>
+            <strong>Gestión de puntos</strong>
+            <small class="d-block text-muted">Acreditar o debitar puntos</small>
+          </span>
+          <span class="text-muted">›</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

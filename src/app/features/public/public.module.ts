@@ -5,10 +5,14 @@ import { FormsModule } from '@angular/forms';
 import { PublicRoutingModule } from './public-routing.module';
 import { SharedModule } from '../../shared/shared.module';
 import { InicioComponent } from '../../components/inicio/inicio.component';
+import { CheckoutComponent } from './pages/checkout/checkout.component';
+import { ConfirmacionComponent } from './pages/confirmacion/confirmacion.component';
 
 @NgModule({
   declarations: [
-    InicioComponent
+    InicioComponent,
+    CheckoutComponent,
+    ConfirmacionComponent
   ],
   imports: [
     CommonModule,
@@ -18,4 +22,3 @@ import { InicioComponent } from '../../components/inicio/inicio.component';
   ]
 })
 export class PublicModule {}
-

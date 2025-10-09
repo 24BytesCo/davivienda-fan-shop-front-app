@@ -1,0 +1,5 @@
+.cfg-modal { position: fixed; inset: 0; z-index: 1060; display: none; }
+.cfg-modal.open { display: block; }
+.cfg-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.45); }
+.cfg-panel { position: relative; width: 520px; max-width: calc(100% - 32px); margin: 10vh auto 0; background: #fff; border-radius: 8px; padding: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.2); }
+

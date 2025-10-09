@@ -1,0 +1,24 @@
+<div class="card h-100">
+  <div class="card-body">
+    <div class="d-flex align-items-center justify-content-between mb-2">
+      <h2 class="h6 mb-0">Tasa de conversión (COP por punto)</h2>
+      <button class="btn btn-sm btn-outline-secondary" (click)="load()" [disabled]="loading">Recargar</button>
+    </div>
+
+    <div *ngIf="loading" class="text-muted">Cargando…</div>
+
+    <div *ngIf="!loading">
+      <div class="form-group mb-3">
+        <label>Valor de la tasa</label>
+        <input type="number" class="form-control" [(ngModel)]="tasa" min="1" step="1" placeholder="Ej: 100" />
+        <small class="form-text text-muted">Cada punto equivale a este valor en COP.</small>
+      </div>
+      <div class="text-right">
+        <button class="btn btn-primary" (click)="save()" [disabled]="saving">
+          {{ saving ? 'Guardando…' : 'Guardar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+

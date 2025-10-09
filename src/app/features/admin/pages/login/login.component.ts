@@ -36,7 +36,13 @@ export class LoginComponent {
     this.auth.authenticate$(this.email, this.password, this.remember).subscribe({
       next: () => {
         this.notify.toastSuccess('Bienvenido');
-        this.router.navigate(['/admin']);
+        const role = this.auth.getUser()?.role || '';
+        const r = String(role).toLowerCase();
+        if (r.includes('admin')) {
+          this.router.navigate(['/admin']);
+        } else {
+          this.router.navigate(['/usuario/dashboard']);
+        }
       },
       error: (err) => {
         this.error = this.getErrorMessage(err);
@@ -78,7 +84,9 @@ export class LoginComponent {
         next: (token) => {
           if (token) {
             this.notify.toastSuccess('Cuenta creada');
-            this.router.navigate(['/admin']);
+            const role = this.auth.getUser()?.role || '';
+            const r = String(role).toLowerCase();
+            this.router.navigate([r.includes('admin') ? '/admin' : '/usuario/dashboard']);
           } else {
             // Si la API no devuelve token en el registro, iniciamos sesión con las credenciales ingresadas
             this.auth
@@ -86,7 +94,9 @@ export class LoginComponent {
               .subscribe({
                 next: () => {
                   this.notify.toastSuccess('Cuenta creada');
-                  this.router.navigate(['/admin']);
+                  const role = this.auth.getUser()?.role || '';
+                  const r = String(role).toLowerCase();
+                  this.router.navigate([r.includes('admin') ? '/admin' : '/usuario/dashboard']);
                 },
                 error: (err) => {
                   this.error = this.getErrorMessage(err);
