@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, concatMap, map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Cart, CartItem } from '../models/cart.model';
 import { Product } from '../models/product.model';
@@ -45,7 +45,7 @@ constructor(private http: HttpClient, private notify: NotificationService, priva
         map(res => this.unwrapCart(res)),
         map(cart => this.mergeProductHint(cart, productId, productHint)),
         tap(cart => { this.cartSubject.next(cart); this.writeLocal(cart); this.notify.toastSuccessLeft('Añadido al carrito'); }),
-        catchError(() => this.addFallbackLocal(productId, quantity, productHint))
+        catchError(() => of(this.cartSubject.value))
       );
     }
     return this.addFallbackLocal(productId, quantity, productHint);
@@ -59,7 +59,7 @@ constructor(private http: HttpClient, private notify: NotificationService, priva
       return this.http.patch<any>(`${this.baseUrl}/items`, payload).pipe(
         map(res => this.unwrapCart(res)),
         tap(cart => { this.cartSubject.next(cart); this.writeLocal(cart); }),
-        catchError(() => this.updateFallbackLocal(productId, quantity))
+        catchError(() => of(this.cartSubject.value))
       );
     }
     return this.updateFallbackLocal(productId, quantity);
@@ -71,7 +71,7 @@ constructor(private http: HttpClient, private notify: NotificationService, priva
       return this.http.delete<any>(`${this.baseUrl}/items/${userId}/${productId}`).pipe(
         map(res => this.unwrapCart(res)),
         tap(cart => { this.cartSubject.next(cart); this.writeLocal(cart); }),
-        catchError(() => this.removeFallbackLocal(productId))
+        catchError(() => of(this.cartSubject.value))
       );
     }
     return this.removeFallbackLocal(productId);
@@ -182,5 +182,37 @@ constructor(private http: HttpClient, private notify: NotificationService, priva
       this.cartSubject.next(updated);
       this.writeLocal(updated);
     }
+  }
+
+  /**
+   * Migra el carrito local (si existe) al servidor cuando el usuario inicia sesión.
+   * - Intenta registrar cada item de forma secuencial para evitar condiciones de carrera.
+   * - Ignora errores individuales para no bloquear el inicio de sesión.
+   * - Al terminar, hace refresh() y limpia almacenamiento local.
+   */
+  migrateLocalToServer$(): Observable<void> {
+    const userId = this.getUserId();
+    if (!userId) return of(void 0);
+    const local = this.readLocal();
+    if (!local || !local.items || local.items.length === 0) {
+      return this.refresh().pipe(map(() => void 0));
+    }
+
+    const items = [...local.items];
+    return of(...items).pipe(
+      concatMap((it) => {
+        const payload: any = { userId, productoId: String(it.productId), cantidad: Number(it.quantity || 1) };
+        return this.http.post<any>(`${this.baseUrl}/items`, payload).pipe(
+          catchError(() => of(null))
+        );
+      }),
+      // Tras procesar todos, refrescar y limpiar local
+      concatMap(() => this.refresh()),
+      tap(() => {
+        try { localStorage.removeItem(this.storageKey); } catch {}
+      }),
+      map(() => void 0),
+      catchError(() => of(void 0))
+    );
   }
 }

@@ -11,7 +11,7 @@
 .sb-sidenav.collapsed { width: 80px; }
 .sb-sidenav-header { background: inherit; }
 .sb-sidenav-header { position: relative; }
-.sb-sidenav-header > .btn { position: absolute; right: 5px; top: 5px; z-index: 1060; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,.08); }
+.sb-sidenav-header > .btn { position: absolute; right: 5px; top: 21px; z-index: 1060; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,.08); }
 .sb-sidenav-menu { height: calc(100% - 87px); overflow-y: auto; padding-top: 3.5rem; }
 .sb-sidenav .nav { flex-direction: column; }
 .sb-sidenav .nav-link { display: flex; align-items: center; padding: .5rem .75rem; margin: 2px 6px; border-radius: .25rem; color: #1e212c; }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth.service';
+import { CartService } from '../../../../core/services/cart.service';
 import { NotificationService } from '../../../../core/services/notification.service';
 
 /** Pantalla de autenticación (login/registro rápido). */
@@ -26,7 +27,8 @@ export class LoginComponent {
   constructor(
     private auth: AuthService,
     private router: Router,
-    private notify: NotificationService
+    private notify: NotificationService,
+    private cart: CartService
   ) {}
 
   /** Envía credenciales de inicio de sesión */
@@ -36,13 +38,11 @@ export class LoginComponent {
     this.auth.authenticate$(this.email, this.password, this.remember).subscribe({
       next: () => {
         this.notify.toastSuccess('Bienvenido');
-        const role = this.auth.getUser()?.role || '';
-        const r = String(role).toLowerCase();
-        if (r.includes('admin')) {
-          this.router.navigate(['/admin']);
-        } else {
-          this.router.navigate(['/usuario/dashboard']);
-        }
+        // Migrar carrito local al backend de forma segura y luego redirigir
+        this.cart.migrateLocalToServer$().subscribe({
+          next: () => this.navigatePostLogin(),
+          error: () => this.navigatePostLogin(),
+        });
       },
       error: (err) => {
         this.error = this.getErrorMessage(err);
@@ -84,9 +84,10 @@ export class LoginComponent {
         next: (token) => {
           if (token) {
             this.notify.toastSuccess('Cuenta creada');
-            const role = this.auth.getUser()?.role || '';
-            const r = String(role).toLowerCase();
-            this.router.navigate([r.includes('admin') ? '/admin' : '/usuario/dashboard']);
+            this.cart.migrateLocalToServer$().subscribe({
+              next: () => this.navigatePostLogin(),
+              error: () => this.navigatePostLogin(),
+            });
           } else {
             // Si la API no devuelve token en el registro, iniciamos sesión con las credenciales ingresadas
             this.auth
@@ -94,9 +95,10 @@ export class LoginComponent {
               .subscribe({
                 next: () => {
                   this.notify.toastSuccess('Cuenta creada');
-                  const role = this.auth.getUser()?.role || '';
-                  const r = String(role).toLowerCase();
-                  this.router.navigate([r.includes('admin') ? '/admin' : '/usuario/dashboard']);
+                  this.cart.migrateLocalToServer$().subscribe({
+                    next: () => this.navigatePostLogin(),
+                    error: () => this.navigatePostLogin(),
+                  });
                 },
                 error: (err) => {
                   this.error = this.getErrorMessage(err);
@@ -130,5 +132,12 @@ export class LoginComponent {
     }
     if (typeof err?.message === 'string') return err.message;
     return 'No se pudo completar la accion. Verifica tus datos.';
+  }
+
+  /** Decide destino tras login/registro según rol */
+  private navigatePostLogin(): void {
+    const role = this.auth.getUser()?.role || '';
+    const r = String(role).toLowerCase();
+    this.router.navigate([r.includes('admin') ? '/admin' : '/usuario/dashboard']);
   }
 }
