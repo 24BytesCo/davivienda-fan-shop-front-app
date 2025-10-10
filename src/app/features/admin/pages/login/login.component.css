@@ -35,13 +35,12 @@
 
 /* Botón inferior (solo desktop / tablets) */
 .login-bottom-cta {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 60px;
+
   justify-content: center;
   z-index: 1040;
 }
+
+
 
 @media (max-width: 767.98px) {
   .login-bottom-cta {

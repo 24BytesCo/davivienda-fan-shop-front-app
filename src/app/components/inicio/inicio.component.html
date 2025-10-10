@@ -8,7 +8,7 @@
     </div>
     <div class="row">
       <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-4" *ngFor="let p of newArrivals | slice:0:4">
-        <a href="javascript:void(0)" class="card product-card h-100 text-decoration-none border-0 shadow-sm" (click)="openDetails(p)">
+        <a href="javascript:void(0)" class="card product-card h-100 text-decoration-none border-0 shadow-sm" [ngClass]="{ 'out-of-stock': (p.stock || 0) <= 0 }" (click)="openDetails(p)">
           <div class="ratio-box">
             <img *ngIf="p.images && p.images.length > 0" [src]="p.images![0].url" class="w-100 h-100" alt="{{p.title}}"/>
             <div *ngIf="!p.images || !p.images.length" class="noimg text-muted">Sin imagen</div>
@@ -31,7 +31,7 @@
     </div>
     <div class="row">
       <div class="col-6 col-sm-4 col-md-3 col-lg-3 mb-4" *ngFor="let p of group.items | slice:0:4">
-        <a href="javascript:void(0)" class="card product-card h-100 text-decoration-none border-0 shadow-sm" (click)="openDetails(p)">
+        <a href="javascript:void(0)" class="card product-card h-100 text-decoration-none border-0 shadow-sm" [ngClass]="{ 'out-of-stock': (p.stock || 0) <= 0 }" (click)="openDetails(p)">
           <div class="ratio-box">
             <img *ngIf="p.images && p.images.length > 0" [src]="p.images![0].url" class="w-100 h-100" alt="{{p.title}}"/>
             <div *ngIf="!p.images || !p.images.length" class="noimg text-muted">Sin imagen</div>
@@ -98,3 +98,4 @@
 </div>
 
 <app-footer></app-footer>
+
