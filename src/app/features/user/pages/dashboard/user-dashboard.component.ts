@@ -21,8 +21,10 @@ export class UserDashboardComponent implements OnInit {
     private products: ProductService,
   ) {}
 
+  /** Carga las órdenes del usuario al iniciar. */
   ngOnInit(): void { this.fetchOrders(); }
 
+  /** Recupera y almacena las órdenes del usuario. */
   private fetchOrders(): void {
     this.loading = true;
     this.error = null;
@@ -37,6 +39,7 @@ export class UserDashboardComponent implements OnInit {
   viewDetails(o: Orden): void { this.selected = o; this.showDetails = true; }
   closeDetails(): void { this.showDetails = false; }
 
+  /** Intenta completar imágenes de productos faltantes en las órdenes. */
   private enrichProductImages(orders: Orden[]): void {
     try {
       for (const o of orders || []) {

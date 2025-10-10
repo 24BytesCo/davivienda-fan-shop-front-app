@@ -29,10 +29,12 @@ export class AuthService {
     this.rehydrate();
   }
 
+  /** Indica si hay token almacenado (sesión activa). */
   isAuthenticated(): boolean {
     return !!this.getToken();
   }
 
+  /** Obtiene el token JWT desde local/sessionStorage. */
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey) || sessionStorage.getItem(this.tokenKey);
   }
@@ -101,6 +103,7 @@ export class AuthService {
     );
   }
 
+  /** Cierra sesión: elimina token y usuario de almacenamiento. */
   logout(): void {
     localStorage.removeItem(this.tokenKey);
     sessionStorage.removeItem(this.tokenKey);

@@ -23,10 +23,12 @@ constructor(private http: HttpClient, private notify: NotificationService, priva
     this.refresh().subscribe();
   }
 
+  /** Flujo con el número total de ítems en el carrito. */
   get count$(): Observable<number> {
     return this.cart$.pipe(map(c => c.items.reduce((acc, it) => acc + (it.quantity || 0), 0)));
   }
 
+  /** Sincroniza el carrito desde la API (si hay usuario). */
   refresh(): Observable<Cart> {
     const userId = this.getUserId();
     if (!userId) return of(this.cartSubject.value);
@@ -37,6 +39,7 @@ constructor(private http: HttpClient, private notify: NotificationService, priva
     );
   }
 
+  /** Añade un producto al carrito (o incrementa su cantidad). */
   add(productId: string | number, quantity = 1, productHint?: Product): Observable<Cart> {
     const userId = this.getUserId();
     const payload: any = { userId, productoId: String(productId), cantidad: quantity };
@@ -51,6 +54,7 @@ constructor(private http: HttpClient, private notify: NotificationService, priva
     return this.addFallbackLocal(productId, quantity, productHint);
   }
 
+  /** Actualiza la cantidad de un ítem del carrito. */
   update(productId: string | number, quantity: number): Observable<Cart> {
     if (quantity <= 0) return this.remove(productId);
     const userId = this.getUserId();
@@ -65,6 +69,7 @@ constructor(private http: HttpClient, private notify: NotificationService, priva
     return this.updateFallbackLocal(productId, quantity);
   }
 
+  /** Elimina un producto del carrito. */
   remove(productId: string | number): Observable<Cart> {
     const userId = this.getUserId();
     if (userId) {
@@ -77,6 +82,7 @@ constructor(private http: HttpClient, private notify: NotificationService, priva
     return this.removeFallbackLocal(productId);
   }
 
+  /** Actualiza cantidad en el carrito local cuando no hay sesión. */
   private updateFallbackLocal(productId: string | number, quantity: number): Observable<Cart> {
     const current = { ...this.cartSubject.value } as Cart;
     const idx = current.items.findIndex(i => i.productId === productId);
@@ -87,6 +93,7 @@ constructor(private http: HttpClient, private notify: NotificationService, priva
     return of(current);
   }
 
+  /** Elimina ítem en el carrito local cuando no hay sesión. */
   private removeFallbackLocal(productId: string | number): Observable<Cart> {
     const current = { ...this.cartSubject.value } as Cart;
     current.items = current.items.filter(i => i.productId !== productId);
@@ -95,6 +102,7 @@ constructor(private http: HttpClient, private notify: NotificationService, priva
     return of(current);
   }
 
+  /** Añade ítem al carrito local cuando no hay sesión. */
   private addFallbackLocal(productId: string | number, quantity = 1, productHint?: Product): Observable<Cart> {
     const current = { ...this.cartSubject.value } as Cart;
     const idx = current.items.findIndex(i => i.productId === productId);
@@ -109,6 +117,7 @@ constructor(private http: HttpClient, private notify: NotificationService, priva
     return of(current);
   }
 
+  /** Inyecta datos de producto conocidos en la respuesta del carrito. */
   private mergeProductHint(cart: Cart, productId: string | number, productHint?: Product): Cart {
     if (!productHint) return cart;
     const updated: Cart = { ...cart, items: (cart.items || []).map(i => ({ ...i })) };
@@ -120,6 +129,7 @@ constructor(private http: HttpClient, private notify: NotificationService, priva
     return updated;
   }
 
+  /** Estandariza distintas formas de carrito devueltas por la API. */
   private unwrapCart(res: any): Cart {
     const data = res?.data ?? res;
     if (!data) return { items: [] };
@@ -137,13 +147,16 @@ constructor(private http: HttpClient, private notify: NotificationService, priva
     };
   }
 
+  /** Lee el carrito local desde localStorage. */
   private readLocal(): Cart | null {
     try { const raw = localStorage.getItem(this.storageKey); return raw ? JSON.parse(raw) : null; } catch { return null; }
   }
+  /** Persiste el carrito local en localStorage. */
   private writeLocal(cart: Cart) {
     try { localStorage.setItem(this.storageKey, JSON.stringify(cart)); } catch {}
   }
 
+  /** Vacía completamente el carrito (local o remoto). */
   clear(): Observable<Cart> {
     const userId = this.getUserId();
     if (userId) {
@@ -162,6 +175,7 @@ constructor(private http: HttpClient, private notify: NotificationService, priva
     return of({ items: [] });
   }
 
+  /** Obtiene el ID del usuario autenticado (si existe). */
   private getUserId(): string | null {
     try { return (this as any).auth?.getUser?.()?.id ?? null; } catch { return null; }
   }
@@ -184,12 +198,7 @@ constructor(private http: HttpClient, private notify: NotificationService, priva
     }
   }
 
-  /**
-   * Migra el carrito local (si existe) al servidor cuando el usuario inicia sesión.
-   * - Intenta registrar cada item de forma secuencial para evitar condiciones de carrera.
-   * - Ignora errores individuales para no bloquear el inicio de sesión.
-   * - Al terminar, hace refresh() y limpia almacenamiento local.
-   */
+  /** Sube el carrito local al servidor tras el login y limpia el local. */
   migrateLocalToServer$(): Observable<void> {
     const userId = this.getUserId();
     if (!userId) return of(void 0);

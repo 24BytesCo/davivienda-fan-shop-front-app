@@ -30,6 +30,7 @@ export class InicioComponent implements OnInit {
 
   ngOnInit(): void { this.load(); }
 
+  /** Carga productos y agrupa para el home. */
   private load(): void {
     this.loading = true;
     this.api.list$(1, 100).subscribe(
@@ -42,6 +43,7 @@ export class InicioComponent implements OnInit {
     );
   }
 
+  /** Calcula agrupaciones y nuevos lanzamientos. */
   private computeGroups(): void {
     const groups = new Map<string, Product[]>();
     for (const p of this.products) {
@@ -71,22 +73,26 @@ export class InicioComponent implements OnInit {
   }
 
   // ---------- Detalles ----------
+  /** Abre el modal de detalles para un producto. */
   openDetails(p: Product) {
     this.detail = p;
     this.detailImageIndex = 0;
     this.showDetail = true;
   }
+  /** Cierra el modal de detalles. */
   closeDetails() {
     this.showDetail = false;
     this.detail = null;
     this.detailImageIndex = 0;
   }
+  /** Cambia la imagen activa en el detalle. */
   setDetailImage(i: number) {
     if (!this.detail?.images) return;
     if (i < 0 || i >= this.detail.images.length) return;
     this.detailImageIndex = i;
   }
 
+  /** Añade el producto al carrito. */
   addToCart(p: Product) {
     this.cart.add(p.id, 1, p).subscribe();
   }

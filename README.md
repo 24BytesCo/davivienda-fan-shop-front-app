@@ -1,27 +1,52 @@
-# DaviviendaFanShopFrontApp
+# Davivienda Fan Shop – Frontend (Angular)
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.1.4.
+Aplicación SPA en Angular para la tienda de fanáticos de Davivienda. Incluye sitio público, flujo de carrito y checkout, y un panel de administración con gestión de productos, configuración de tasa de conversión y administración de puntos.
 
-## Development server
+## Tecnologías
+- Angular 12, RxJS 6
+- SweetAlert2 para notificaciones
+- Interceptor HTTP con JWT (Bearer) y guards de rutas
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Requisitos
+- Node.js 14.x y npm 6.x (ver `engines` en `package.json`)
+- Angular CLI 12 (`npm i -g @angular/cli@12` opcional)
+- Backend expuesto vía REST (ver `apiUrl`)
 
-## Code scaffolding
+## Configuración
+Edita los entornos para apuntar al backend:
+- Desarrollo: `src/environments/environment.ts` → `apiUrl: 'http://localhost:3010/api'`
+- Producción: `src/environments/environment.prod.ts` → `apiUrl: 'https://api.tu-dominio.com'`
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Instalación y ejecución
+1. Instalar dependencias: `npm install`
+2. Desarrollo: `npm start` y abrir `http://localhost:4200/`
+3. Compilar producción: `npm run build`
+4. Pruebas unitarias: `npm test`
 
-## Build
+## Estructura relevante
+- `src/app/core` – servicios, modelos, guards e interceptores
+  - `services/` (`auth`, `product`, `cart`, `ordenes`, `puntos`, `configuracion`, `usuarios`)
+  - `guards/` (`auth.guard`, `admin.guard`)
+  - `interceptors/` (`auth.interceptor`)
+- `src/app/features/public` – vistas públicas (inicio/checkout/confirmación)
+- `src/app/features/admin` – panel admin (login, productos, tasa, puntos)
+- `src/app/features/user` – dashboard de usuario
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Rutas principales
+- Público: `/` (inicio), `/checkout`, `/confirmacion/:id`
+- Admin: `/admin/login`, `/admin` (dashboard), `/admin/configuracion/(tasa|puntos)`
+- Usuario: `/usuario/dashboard`
 
-## Running unit tests
+## Flujos clave
+- Carrito: `CartService` (estado reactivo + persistencia local con fallback)
+- Checkout: con puntos o dinero; tasa configurable vía `ConfiguracionService`
+- Autenticación: `AuthService` maneja token/usuario; `AuthInterceptor` agrega `Authorization`
+- Administración: CRUD de productos (subida de imágenes), ajuste de tasa y puntos
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+## Estándares de código
+- Métodos documentados con comentarios JSDoc breves en español
+- Servicios y componentes con nombres autoexplicativos y tipados estrictos
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Notas
+- Asegúrate de que el `apiUrl` apunte a tu backend antes de probar el checkout
+- Los toasts y diálogos usan SweetAlert2; ajusta mensajes/tiempos si lo requieres

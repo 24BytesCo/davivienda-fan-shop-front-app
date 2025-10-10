@@ -6,12 +6,14 @@ import { AuthService } from '../services/auth.service';
 export class AdminGuard implements CanActivate, CanActivateChild {
   constructor(private auth: AuthService, private router: Router) {}
 
+  /** Verifica si un rol corresponde a administrador. */
   private isAdminRole(role?: string | null): boolean {
     if (!role) return false;
     const r = String(role).toLowerCase();
     return r === 'admin' || r === 'administrator' || r === 'administrador' || r === 'superadmin' || r.includes('admin');
   }
 
+  /** Resuelve acceso o redirección según sesión y rol. */
   private handle(): boolean | UrlTree {
     // Requiere autenticación previa (AuthGuard debe ir antes idealmente)
     const user = this.auth.getUser();
@@ -22,7 +24,9 @@ export class AdminGuard implements CanActivate, CanActivateChild {
       : this.router.parseUrl('/admin/login');
   }
 
+  /** Protege rutas de nivel superior para administradores. */
   canActivate(): boolean | UrlTree { return this.handle(); }
+  /** Protege rutas hijas para administradores. */
   canActivateChild(): boolean | UrlTree { return this.handle(); }
 }
 

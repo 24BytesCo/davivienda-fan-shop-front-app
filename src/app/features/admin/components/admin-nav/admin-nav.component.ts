@@ -26,7 +26,9 @@ export class AdminNavComponent implements OnInit, OnDestroy {
     this.route = this.router.url;
   }
 
+  /** Inicializa clases del layout admin. */
   ngOnInit(): void { this.applyBodyOffset(); }
+  /** Limpia clases del layout al destruir el componente. */
   ngOnDestroy(): void {
     document.body.classList.remove('admin-has-sidenav');
     document.body.classList.remove('admin-sidenav-collapsed');
@@ -34,6 +36,7 @@ export class AdminNavComponent implements OnInit, OnDestroy {
 
   get loggedIn(): boolean { return this.auth.isAuthenticated(); }
 
+  /** Cierra sesión y redirige al login de administración. */
   logout(): void {
     this.auth.logout();
     this.notify.toastSuccess('Sesión cerrada');
@@ -44,6 +47,7 @@ export class AdminNavComponent implements OnInit, OnDestroy {
   onConfigMenuChange(v: boolean): void { this.showConfigMenu = v; }
   toggleCollapse(): void { this.sidebarCollapsed = !this.sidebarCollapsed; this.applyBodyOffset(); }
 
+  /** Aplica clases al body según estado del sidebar. */
   private applyBodyOffset(): void {
     document.body.classList.add('admin-has-sidenav');
     if (this.sidebarCollapsed) document.body.classList.add('admin-sidenav-collapsed');

@@ -27,18 +27,21 @@ export class OrdenesService {
   private readonly baseUrl = `${environment.apiUrl}/ordenes`;
   constructor(private http: HttpClient) {}
 
+  /** Inicia el checkout para el usuario y retorna la orden. */
   checkout(userId: string, modoPago: 'puntos' | 'dinero'): Observable<Orden> {
     return this.http
       .post<any>(`${this.baseUrl}/checkout/${userId}`, { modoPago })
       .pipe(map((res) => (res?.data ?? res) as Orden));
   }
 
+  /** Confirma el pago de una orden (flujo simulado para 'dinero'). */
   confirmarPago(ordenId: string): Observable<{ id: string; estado: 'PAGADA' | string }> {
     return this.http
       .post<any>(`${this.baseUrl}/${ordenId}/confirmar-pago`, {})
       .pipe(map((res) => (res?.data ?? res)));
   }
 
+  /** Lista órdenes por ID de usuario. */
   listByUser(userId: string): Observable<Orden[]> {
     return this.http
       .get<any>(`${this.baseUrl}/usuario/${userId}`)

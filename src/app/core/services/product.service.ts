@@ -11,6 +11,7 @@ export class ProductService {
 
   constructor(private http: HttpClient) {}
 
+  /** Lista productos paginados con filtro opcional. */
   list$(page = 1, limit = 10, q = ''): Observable<PaginatedResult<Product>> {
 
     const safePage = Math.max(1, Number(page) || 1);
@@ -42,12 +43,14 @@ export class ProductService {
     );
   }
 
+  /** Obtiene un producto por su ID. */
   getById$(id: string): Observable<Product> {
     return this.http
       .get<any>(`${this.baseUrl}/${id}`)
       .pipe(map((res) => this.unwrapEntity<Product>(res)));
   }
 
+  /** Crea un nuevo producto con imágenes opcionales. */
   create$(
     data: Partial<Product>,
     files: File[] = [],
@@ -59,6 +62,7 @@ export class ProductService {
       .pipe(map((res) => this.unwrapEntity<Product>(res)));
   }
 
+  /** Actualiza un producto existente. */
   update$(
     id: string | number,
     data: Partial<Product>,
@@ -72,6 +76,7 @@ export class ProductService {
       .pipe(map((res) => res?.data ?? res));
   }
 
+  /** Elimina un producto por ID. */
   delete$(id: string | number) {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
