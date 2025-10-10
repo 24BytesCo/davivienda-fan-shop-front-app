@@ -29,9 +29,10 @@
                     </li>
                     <li class="nav-item d-none d-lg-block mb-0" *ngIf="loggedIn">
                         <!-- Dashboard solo para administradores -->
-                        <a routerLink="/admin/dashboard" class="nav-tool" *ngIf="isAdmin">
+                        <a [routerLink]="isAdmin ? '/admin/dashboard' : '/usuario/dashboard'" class="nav-tool" *ngIf="isAdmin || isUser">
                             <i class="cxi-home nav-tool-icon"></i>
                             <span class="nav-tool-label">Dashboard</span>
+                            
                         </a>
                         <a href="javascript:void(0)" class="nav-tool" (click)="logout()">
                             <i class="cxi-user nav-tool-icon"></i>

@@ -8,6 +8,8 @@ export interface OrdenItem {
   producto: any;
   cantidad: number;
   pointsUnit: number;
+  /** Opcional: id del producto cuando el backend no expone la relación completa */
+  productoId?: string;
 }
 
 export interface Orden {
@@ -40,6 +42,13 @@ export class OrdenesService {
   listByUser(userId: string): Observable<Orden[]> {
     return this.http
       .get<any>(`${this.baseUrl}/usuario/${userId}`)
+      .pipe(map((res) => (res?.data ?? res) as Orden[]));
+  }
+
+  /** Lista las órdenes del usuario autenticado (requiere token JWT). */
+  listMine(): Observable<Orden[]> {
+    return this.http
+      .get<any>(`${this.baseUrl}/mis-ordenes`)
       .pipe(map((res) => (res?.data ?? res) as Orden[]));
   }
 }

@@ -76,4 +76,11 @@ export class NavComponent implements OnInit {
     const r = String(role).toLowerCase();
     return r.includes('admin');
   }
+
+  /** Indica si el usuario autenticado es usuario normal */
+  get isUser(): boolean {
+    const role = this.auth.getUser()?.role || '';
+    const r = String(role).toLowerCase();
+    return r.includes('usuario');
+  }
 }

@@ -1,1 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* Layout: mover el contenido con el sidenav del admin */
+body.admin-has-sidenav .cs-page-wrapper {
+  margin-left: 240px;
+  transition: margin-left .25s ease;
+}
+body.admin-has-sidenav.admin-sidenav-collapsed .cs-page-wrapper {
+  margin-left: 80px;
+}
+
+/* Opcional: en móviles, que el contenido no se desplace */
+@media (max-width: 991.98px) {
+  body.admin-has-sidenav .cs-page-wrapper,
+  body.admin-has-sidenav.admin-sidenav-collapsed .cs-page-wrapper {
+    margin-left: 0 !important;
+  }
+}
+@media (min-width: 1280px) {
+    .container,.container-sm,.container-md,.container-lg,.container-xl {
+        max-width:90%;
+    }
+}

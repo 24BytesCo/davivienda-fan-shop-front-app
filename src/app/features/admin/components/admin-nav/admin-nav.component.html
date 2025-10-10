@@ -1,17 +1,43 @@
 <header class="admin-header navbar navbar-light bg-light border-bottom">
   <div class="container d-flex justify-content-between align-items-center py-2">
     <a routerLink="/admin" class="navbar-brand mb-0 h5">Hola {{ nombreUsuario }} | {{ rolUsuario }}</a>
-
     <div class="d-flex align-items-center">
       <a *ngIf="!loggedIn" routerLink="/admin/login" class="btn btn-outline-primary btn-sm">Iniciar sesión</a>
       <ng-container *ngIf="loggedIn">
-        <button class="btn btn-outline-primary btn-sm mr-2" routerLink="/">Ir a Tienda</button>
-        <button *ngIf="isAdmin" class="btn btn-outline-primary btn-sm mr-2" (click)="openConfigMenu()">Configuración</button>
         <button (click)="logout()" class="btn btn-outline-secondary btn-sm">Cerrar sesión</button>
       </ng-container>
     </div>
   </div>
 </header>
 
-<!-- Modal de menú de configuración global -->
+<aside class="sb-sidenav sb-sidenav-light" [class.collapsed]="sidebarCollapsed">
+  <div class="sb-sidenav-header d-flex align-items-center justify-content-between px-2 py-2 border-bottom">
+    <strong class="small mb-0">Acciones</strong>
+    <button class="btn btn-sm btn-light" (click)="toggleCollapse()" aria-label="Alternar menú"><i class="cxi-menu"></i></button>
+  </div>
+  <nav class="sb-sidenav-menu">
+    <div class="nav">
+      <a class="nav-link" routerLink="/">
+        <div class="sb-nav-link-icon"><i class="cxi-home"></i></div>
+        <span class="sb-nav-link-text">Ir a Tienda</span>
+      </a>
+      <a class="nav-link" *ngIf="isAdmin" routerLink="/usuario/dashboard">
+        <div class="sb-nav-link-icon"><i class="cxi-bag"></i></div>
+        <span class="sb-nav-link-text">Mis compras</span>
+      </a>
+      <a class="nav-link" *ngIf="isAdmin" (click)="openConfigMenu()">
+        <div class="sb-nav-link-icon"><i class="cxi-settings"></i></div>
+        <span class="sb-nav-link-text">Configuración</span>
+      </a>
+    </div>
+  </nav>
+  <div class="sb-sidenav-footer">
+    <a class="nav-link" href="javascript:void(0)" (click)="logout()">
+      <div class="sb-nav-link-icon"><i class="cxi-logout"></i></div>
+      <span class="sb-nav-link-text">Cerrar sesión</span>
+    </a>
+  </div>
+</aside>
+
 <app-config-menu-modal [(open)]="showConfigMenu"></app-config-menu-modal>
+

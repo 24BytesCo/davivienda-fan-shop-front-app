@@ -4,5 +4,44 @@
   z-index: 1030;
 }
 
-/* Drawer eliminado: configuración ahora es una página dedicada */
+/* Sidenav fijo */
 
+/* SB Admin-like sidenav */
+.sb-sidenav { position: fixed; top: 87px; left: 0; bottom: 0; width: 240px;  border-right: 1px solid #e5e8ed; z-index: 1040; transition: width .25s; overflow: hidden; }
+.sb-sidenav.collapsed { width: 80px; }
+.sb-sidenav-header { background: inherit; }
+.sb-sidenav-header { position: relative; }
+.sb-sidenav-header > .btn { position: absolute; right: 5px; top: 5px; z-index: 1060; border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,.08); }
+.sb-sidenav-menu { height: calc(100% - 87px); overflow-y: auto; padding-top: 3.5rem; }
+.sb-sidenav .nav { flex-direction: column; }
+.sb-sidenav .nav-link { display: flex; align-items: center; padding: .5rem .75rem; margin: 2px 6px; border-radius: .25rem; color: #1e212c; }
+.sb-sidenav .nav-link:hover { background: #e9ecef; text-decoration: none; }
+.sb-nav-link-icon { width: 24px; display: inline-flex; justify-content: center; margin-right: .5rem; font-size: 1rem; }
+.sb-nav-link-text { white-space: nowrap; }
+.sb-sidenav.collapsed .sb-nav-link-text { display: none; }
+.sb-sidenav-footer { position: absolute; left: 0; right: 0; bottom: 0; padding: .25rem .25rem; border-top: 1px solid #e5e8ed; background: inherit; }
+.sb-sidenav-footer .nav-link { margin: 2px 6px; }
+
+/* Icono del botón de menú (que sea gris para mejor contraste) */
+.sb-sidenav-header .btn .cxi-menu {
+  /* Forzar hamburguesa visible aunque no cargue la fuente de iconos */
+  position: relative;
+  display: inline-block;
+  width: 18px;
+  height: 2px;
+  background: #6c757d; /* línea central */
+  border-radius: 2px;
+  vertical-align: middle;
+  /* Ocultar glifo de la fuente de iconos si existe */
+  font-size: 0;
+  /* Generar las otras dos líneas con sombras */
+  box-shadow: 0 -6px 0 0 #6c757d, 0 6px 0 0 #6c757d;
+}
+.sb-sidenav-header .btn:hover .cxi-menu {
+  background: #495057;
+  box-shadow: 0 -6px 0 0 #495057, 0 6px 0 0 #495057;
+}
+
+/* Desplazar el contenido global cuando existe sidenav */
+:host ::ng-deep body.admin-has-sidenav .cs-page-wrapper { margin-left: 240px; transition: margin-left .25s; }
+:host ::ng-deep body.admin-has-sidenav.admin-sidenav-collapsed .cs-page-wrapper { margin-left: 80px; }
