@@ -185,6 +185,22 @@
 
   <!-- Main theme script-->
   <script src="assets/js/theme.min.js"></script>
+  <script>
+    (function () {
+      function bindScrollTop() {
+        var btn = document.querySelector('a.btn-scroll-top');
+        if (!btn) return;
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+          try { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+          catch (_) { window.scrollTo(0, 0); }
+        });
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', bindScrollTop);
+      } else { bindScrollTop(); }
+    })();
+  </script>
 </body>
 
 </html>

@@ -1,0 +1,7 @@
+.od-modal { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 1060; display: none; }
+.od-modal.open { display: block; }
+.od-backdrop { position: absolute; top: 0; right: 0; bottom: 0; left: 0; background: rgba(0,0,0,.45); }
+.od-panel { position: relative; width: 640px; max-width: calc(100% - 32px); margin: 8vh auto 0; background: #fff; border-radius: 8px; padding: 16px; box-shadow: 0 10px 30px rgba(0,0,0,.2); }
+
+.item-thumb { width: 48px; height: 48px; object-fit: cover; border-radius: 6px; background: #f2f4f7; display: inline-block; }
+.item-thumb.placeholder { font-size: 20px; }
