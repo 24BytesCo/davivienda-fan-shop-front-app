@@ -42,10 +42,12 @@ export class ProductsAdminComponent implements OnInit {
 
   constructor(private api: ProductService, private notify: NotificationService) {}
 
+  /** Carga inicial del listado de productos. */
   ngOnInit(): void {
     this.fetch();
   }
 
+  /** Recupera productos paginados desde la API. */
   fetch(p: number = this.page): void {
     this.loading = true;
     this.api.list$(p, this.limit, this.q).subscribe(
@@ -63,11 +65,13 @@ export class ProductsAdminComponent implements OnInit {
     );
   }
 
+  /** Cambia de página del listado. */
   goToPage(p: number) {
     if (p < 1) return;
     this.fetch(p);
   }
 
+  /** Abre el formulario para crear un producto. */
   openCreate() {
     this.editing = null;
     this.form = this.defaultForm();
@@ -78,6 +82,7 @@ export class ProductsAdminComponent implements OnInit {
     setTimeout(() => this.resetNgForm(this.form));
   }
 
+  /** Abre el formulario para editar un producto. */
   openEdit(p: Product) {
     this.editing = p;
     this.form = {
@@ -95,6 +100,7 @@ export class ProductsAdminComponent implements OnInit {
     setTimeout(() => this.resetNgForm(this.form));
   }
 
+  /** Cancela edición/creación y limpia el formulario. */
   cancel() {
     this.showForm = false;
     this.clearFilesUI();
@@ -102,6 +108,7 @@ export class ProductsAdminComponent implements OnInit {
     this.resetNgForm(this.form);
   }
 
+  /** Gestiona selección de imágenes y genera previsualizaciones. */
   onFilesSelected(event: Event) {
     const input = event.target as HTMLInputElement;
     if (!input.files) return;
@@ -116,22 +123,26 @@ export class ProductsAdminComponent implements OnInit {
   }
 
   // ---------- Detalles ----------
+  /** Abre el modal de detalles del producto. */
   openDetails(p: Product) {
     this.detail = p;
     this.detailImageIndex = 0;
     this.showDetail = true;
   }
+  /** Cierra el modal de detalles. */
   closeDetails() {
     this.showDetail = false;
     this.detail = null;
     this.detailImageIndex = 0;
   }
+  /** Cambia la imagen activa en el modal de detalles. */
   setDetailImage(i: number) {
     if (!this.detail?.images) return;
     if (i < 0 || i >= this.detail.images.length) return;
     this.detailImageIndex = i;
   }
 
+  /** Crea o actualiza un producto en la API. */
   save() {
     const payload = {
       title: this.form.title,
@@ -166,6 +177,7 @@ export class ProductsAdminComponent implements OnInit {
     );
   }
 
+  /** Elimina un producto seleccionado. */
   remove(p: Product) {
     if (!confirm('¿Eliminar producto?')) return;
     this.loading = true;
@@ -182,10 +194,12 @@ export class ProductsAdminComponent implements OnInit {
     );
   }
 
+  /** Devuelve el estado inicial del formulario de producto. */
   private defaultForm() {
     return { title: '', points: 0, stock: 0, category: '', description: '', sizesText: '' };
   }
 
+  /** Reinicia el NgForm con valores por defecto. */
   private resetNgForm(preset: any) {
     if (this.formRef) {
       this.formRef.resetForm(preset);
@@ -193,6 +207,7 @@ export class ProductsAdminComponent implements OnInit {
     this.clearFilesUI();
   }
 
+  /** Limpia inputs y previsualizaciones de archivos. */
   private clearFilesUI() {
     this.files = [];
     this.previews = [];

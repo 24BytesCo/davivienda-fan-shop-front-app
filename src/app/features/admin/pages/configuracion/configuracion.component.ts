@@ -13,6 +13,7 @@ export class ConfiguracionComponent {
 
   openOptions(): void { this.showOptions = true; }
   closeOptions(): void { this.showOptions = false; }
+  /** Navega a la sección de configuración elegida. */
   goTo(path: 'tasa' | 'puntos'): void {
     this.showOptions = false;
     this.router.navigate(['/admin/configuracion', path]);

@@ -15,18 +15,21 @@ export class PuntosService {
 
   constructor(private http: HttpClient) {}
 
+  /** Obtiene el saldo de puntos de un usuario. */
   getSaldo(userId: string): Observable<SaldoPuntos> {
     return this.http
       .get<any>(`${this.baseUrl}/${userId}`)
       .pipe(map((res) => (res?.data ?? res) as SaldoPuntos));
   }
 
+  /** Acredita puntos al usuario con un concepto opcional. */
   credit(userId: string, cantidad: number, concepto?: string, ordenId?: string): Observable<SaldoPuntos> {
     return this.http
       .post<any>(`${this.baseUrl}/${userId}/credit`, { cantidad, concepto, ordenId })
       .pipe(map((res) => (res?.data ?? res) as SaldoPuntos));
   }
 
+  /** Debita puntos del usuario con un concepto opcional. */
   debit(userId: string, cantidad: number, concepto?: string, ordenId?: string): Observable<SaldoPuntos> {
     return this.http
       .post<any>(`${this.baseUrl}/${userId}/debit`, { cantidad, concepto, ordenId })

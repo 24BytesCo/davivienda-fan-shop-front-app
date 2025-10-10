@@ -19,6 +19,7 @@ export class TasaConfigComponent {
     this.load();
   }
 
+  /** Carga la tasa actual desde la API. */
   load(): void {
     this.loading = true;
     this.config.getTasa().subscribe({
@@ -27,6 +28,7 @@ export class TasaConfigComponent {
     });
   }
 
+  /** Valida y guarda la tasa de conversión. */
   save(): void {
     if (this.tasa == null || isNaN(this.tasa) || this.tasa <= 0) {
       this.notify.warning('Ingresa una tasa válida (> 0)');

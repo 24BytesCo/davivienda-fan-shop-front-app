@@ -16,6 +16,7 @@ export class AuthInterceptor implements HttpInterceptor {
     private notify: NotificationService,
   ) {}
 
+  /** Intercepta la petición y añade el Bearer token si aplica. */
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let authReq = req;
     const token = this.auth.getToken();

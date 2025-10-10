@@ -26,6 +26,7 @@ export class NavComponent implements OnInit {
     private products: ProductService
   ) {}
 
+  /** Inicializa observables de carrito y sincroniza estado. */
   ngOnInit(): void {
     this.cartCount$ = this.cart.count$;
     this.cart$ = this.cart.cart$;
@@ -44,6 +45,7 @@ export class NavComponent implements OnInit {
     this.router.navigate(['/admin/login']);
   }
 
+  /** Abre el panel del carrito y enriquece ítems con imágenes. */
   openCart(ev?: Event) {
     if (ev) ev.preventDefault();
     this.showCartDrawer = true;
@@ -56,12 +58,17 @@ export class NavComponent implements OnInit {
       });
     });
   }
+  /** Cierra el panel del carrito. */
   closeCart() { this.showCartDrawer = false; }
 
+  /** Incrementa la cantidad de un ítem del carrito. */
   inc(item: any) { const q = (item.quantity || 0) + 1; this.cart.update(item.productId, q).subscribe(); }
+  /** Decrementa la cantidad de un ítem del carrito. */
   dec(item: any) { const q = (item.quantity || 0) - 1; this.cart.update(item.productId, q).subscribe(); }
+  /** Elimina un ítem del carrito. */
   remove(item: any) { this.cart.remove(item.productId).subscribe(); }
 
+  /** Calcula los puntos totales del carrito. */
   totalPoints(cart: Cart): number {
     return (cart.items || []).reduce((t, i) => {
       const qty = i.quantity || 0;

@@ -9,6 +9,7 @@ export class FooterComponent implements OnInit {
 
   constructor() { }
 
+  /** Inicializa el footer (hook de ciclo de vida). */
   ngOnInit(): void {
   }
 

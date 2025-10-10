@@ -36,6 +36,7 @@ export class CheckoutComponent implements OnInit {
     private router: Router
   ) {}
 
+  /** Verifica sesión, carga carrito y tasa si aplica. */
   ngOnInit(): void {
     const user = this.auth.getUser();
     if (!user) {
@@ -54,11 +55,13 @@ export class CheckoutComponent implements OnInit {
     });
   }
 
+  /** Cambia el modo de pago y recalcula totales. */
   switchMode(mode: 'puntos'|'dinero') {
     this.mode = mode;
     this.loadTasaIfNeeded();
   }
 
+  /** Carga la tasa cuando el modo de pago es en dinero. */
   private loadTasaIfNeeded() {
     if (this.mode === 'dinero') {
       this.cfg.getTasa().subscribe(t => {
@@ -69,11 +72,13 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
+  /** Obtiene el total de puntos del carrito. */
   getTotalPoints(): number {
     const items = this.cart?.items || [];
     return items.reduce((acc, it) => acc + (it.quantity || 0) * (it.product?.points || 0), 0);
   }
 
+  /** Ejecuta el flujo de pago según el modo seleccionado. */
   pay() {
     const user = this.auth.getUser();
     if (!user) return;
@@ -116,6 +121,7 @@ export class CheckoutComponent implements OnInit {
     });
   }
 
+  /** Valida de forma básica los datos de la tarjeta. */
   private validateCard(): boolean {
     // Very light validation just to simulate
     const num = this.cardNumber.replace(/\s+/g, '');

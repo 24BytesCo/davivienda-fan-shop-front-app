@@ -39,6 +39,7 @@ export class PuntosAdminComponent {
     this.load();
   }
 
+  /** Carga la lista de usuarios para administrar puntos. */
   load(): void {
     this.loading = true;
     this.loadError = false;
@@ -54,10 +55,12 @@ export class PuntosAdminComponent {
     });
   }
 
+  /** Obtiene/crea el estado de una fila por usuario. */
   stateOf(id: string): RowState {
     return (this.rows[id] ||= {});
   }
 
+  /** Consulta el saldo de puntos del usuario. */
   cargarSaldo(u: User): void {
     const st = this.stateOf(u.id);
     st.loadingSaldo = true;
@@ -67,6 +70,7 @@ export class PuntosAdminComponent {
     });
   }
 
+  /** Acredita puntos al usuario con la cantidad y concepto ingresados. */
   acreditar(u: User): void {
     const st = this.stateOf(u.id);
     const cantidad = Number(st.cantidad ?? 0);
@@ -81,6 +85,7 @@ export class PuntosAdminComponent {
     });
   }
 
+  /** Debita puntos al usuario con la cantidad y concepto ingresados. */
   debitar(u: User): void {
     const st = this.stateOf(u.id);
     const cantidad = Number(st.cantidad ?? 0);
@@ -95,6 +100,7 @@ export class PuntosAdminComponent {
     });
   }
 
+  /** Acredita puntos usando el formulario manual. */
   acreditarManual(): void {
     const { userId } = this.manual;
     const cantidad = Number(this.manual.cantidad ?? 0);
@@ -107,6 +113,7 @@ export class PuntosAdminComponent {
     });
   }
 
+  /** Debita puntos usando el formulario manual. */
   debitarManual(): void {
     const { userId } = this.manual;
     const cantidad = Number(this.manual.cantidad ?? 0);

@@ -12,6 +12,7 @@ export class UsuariosService {
 
   constructor(private http: HttpClient) {}
 
+  /** Lista todos los usuarios (solo admin). */
   list$(): Observable<User[]> {
     return this.http.get<any>(this.baseUrl).pipe(
       map((res) => (res?.data ?? res) as User[]),

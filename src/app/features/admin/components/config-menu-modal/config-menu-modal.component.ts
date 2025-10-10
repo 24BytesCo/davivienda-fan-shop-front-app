@@ -12,11 +12,13 @@ export class ConfigMenuModalComponent {
 
   constructor(private router: Router) {}
 
+  /** Cierra el modal de configuración. */
   close(): void {
     this.open = false;
     this.openChange.emit(false);
   }
 
+  /** Navega a la sección de configuración indicada. */
   goTo(path: 'tasa' | 'puntos'): void {
     this.close();
     this.router.navigate(['/admin/configuracion', path]);
